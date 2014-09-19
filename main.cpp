@@ -4,7 +4,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <w32api/winsock2.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 #include <sys/unistd.h>
 
 using namespace std;
