@@ -1,12 +1,20 @@
-#include <iostream>
-#include <sys/socket.h>
-#include <sys/errno.h>
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
+#include <errno.h>
 #include <stdlib.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <sys/unistd.h>
+
+
+#include <signal.h>
+#include <typeinfo>
+
+
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+
+#include <windows.h>
+#include <winsock2.h>
+#include <iphlpapi.h>
 
 using namespace std;
 
@@ -43,6 +51,7 @@ int main() {
     name.sin_family = PF_INET;
     name.sin_port = htons(30000);
     name.sin_addr.s_addr = htonl(INADDR_ANY);
+    bind(listener_d, (struct sockaddr *) &name, sizeof(name));
 
     //listen
     if(listen(listener_d, 10) == -1) {
@@ -58,7 +67,8 @@ int main() {
         char *msg = "Why, Hello there?";
 
         send(connect_d, msg, strlen(msg), 0);
-        close(connect_d);
+        //close(connect_d);
+        closesocket(connect_d);
     }
     return 0;
 }
